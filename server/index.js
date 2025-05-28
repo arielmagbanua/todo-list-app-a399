@@ -9,7 +9,7 @@ app.get("/", (req, res) => {
   res.send("Hello Todo App!!!");
 });
 
-app.get("/login", (req, res) => {
+app.get("/sign-in", (req, res) => {
   res.send("Login screen");
 });
 
