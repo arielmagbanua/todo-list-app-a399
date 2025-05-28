@@ -9,8 +9,12 @@ app.get("/", (req, res) => {
   res.send("Hello Todo App!!!");
 });
 
-app.get("/login", (req, res) => {
+app.get("/enter", (req, res) => {
   res.send("Login screen");
+});
+
+app.get("/user", (req, res) => {
+  res.send("User screen");
 });
 
 app.listen(port, () => {
