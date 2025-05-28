@@ -9,6 +9,10 @@ app.get("/", (req, res) => {
   res.send("Hello Todo App!!!");
 });
 
+app.get("/login", (req, res) => {
+  res.send("Login screen");
+});
+
 app.listen(port, () => {
   console.log(`Listening to port ${port}`);
 });
