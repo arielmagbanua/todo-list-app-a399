@@ -13,6 +13,10 @@ app.get("/sign-in", (req, res) => {
   res.send("Login screen");
 });
 
+app.get("/user", (req, res) => {
+  res.send("User screen");
+});
+
 app.listen(port, () => {
   console.log(`Listening to port ${port}`);
 });
