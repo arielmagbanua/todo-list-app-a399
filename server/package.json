@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arielmagbanua/todo-list-app-a399.git"
+  },
+  "keywords": [
+    "todo"
+  ],
+  "author": "ariel magbanua",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arielmagbanua/todo-list-app-a399/issues"
+  },
+  "homepage": "https://github.com/arielmagbanua/todo-list-app-a399#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
