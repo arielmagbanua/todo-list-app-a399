@@ -3,14 +3,18 @@ import express from "express";
 const app = express();
 
 // define the port
-const port = 3000;
+const port = 8500;
 
 app.get("/", (req, res) => {
   res.send("Hello Todo App!!!");
 });
 
-app.get("/login", (req, res) => {
+app.get("/sign-in", (req, res) => {
   res.send("Login screen");
+});
+
+app.get("/user", (req, res) => {
+  res.send("User screen");
 });
 
 app.listen(port, () => {
