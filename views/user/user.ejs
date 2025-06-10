@@ -4,11 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User</title>
+
+    <%- include('../partials/styles') %>
   </head>
   <body>
-    <% users.forEach(user => { %> <% if (user.id === id) { %>
-    <h1><%= user.name %></h1>
-    <p>Age: <%= user.age %></p>
-    <% } %> <% }) %>
+    <%- include('../partials/header') %>
+    <h1>User Screen</h1>
+    <%- include('../partials/footer') %>
   </body>
 </html>
