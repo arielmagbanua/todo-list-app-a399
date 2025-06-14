@@ -1,4 +1,7 @@
 import express from "express";
+import authRouter from "./routes/auth/routes.js";
+import userRouter from "./routes/user/routes.js";
+import apiRouter from "./routes/api/routes.js";
 
 const app = express();
 const port = 8500;
@@ -8,51 +11,38 @@ app.use(express.static("public"));
 // Set EJS as the templating engine
 app.set("view engine", "ejs");
 
-// authentication routes
-app.get("/auth/login", (req, res) => {
-  res.render("auth/login");
-});
+app.use("/auth", authRouter);
 
-app.get("/auth/registration", (req, res) => {
-  res.render("auth/registration");
-});
+app.use("/user", userRouter);
 
-// user routes
-app.get("/user/:id", (req, res) => {
-  const userId = req.params.id;
+app.use("/api", apiRouter);
 
-  // TODO: fetched from the database
+const layer1 = (req, res, next) => {
+  console.log("Layer 1");
 
-  // TODO: fetch all todo from user
+  res.redirect("/auth/login");
+};
 
-  res.render("user/user");
-});
+const layer2 = (req, res, next) => {
+  console.log("Layer 2");
+  next();
+};
 
-// api routes
-app.post("/api/todo", (req, res) => {
-  // TODO: create a new todo item
+const layer3 = (req, res, next) => {
+  console.log("Layer 3");
+  res.send("Middleware example completed");
+};
 
-  res.json({ message: "Create todo successful" });
-});
+const middlewares = [layer1, layer2, layer3];
 
-app.put("/api/todo/:id", (req, res) => {
-  const todoId = req.params.id;
-
-  // TODO: update the todo item with the given id
-
-  res.json({ message: `Update todo with id ${todoId} successful` });
-});
-
-app.delete("/api/todo/:id", (req, res) => {
-  const todoId = req.params.id;
-
-  res.json({ message: `Delete todo with id ${todoId} successful` });
-});
+app.get("/middleware", middlewares);
 
 // Define a basic route
 app.get("/", (req, res) => {
   res.render("index", { title: "EJS Example", message: "Welcome to EJS!" });
 });
+
+// Handle 404 errors
 
 app.listen(port, () => {
   console.log(`Listening to port ${port}`);
