@@ -18,11 +18,16 @@ document.addEventListener("DOMContentLoaded", function () {
       url: "/api/user/create",
       data: data,
     })
-      .then((response) => {
-        console.log(response.data);
+      .then((res) => {
+        if (res.status === 201) {
+          alert("You have registered successfully!");
+          // redirect to the login page
+          window.location.href = "/auth/login";
+          formData.clear();
+        }
       })
       .catch((error) => {
-        console.error(error);
+        alert(error.response.data.message);
       });
   });
 });
