@@ -22,4 +22,13 @@ apiRouter.delete("/todo/:id", (req, res) => {
   res.json({ message: `Delete todo with id ${todoId} successful` });
 });
 
+apiRouter.post("/user/create", (req, res) => {
+  const { firstname, lastname, email, password } = req.body;
+
+  // TODO: create a new user
+  res.json({
+    message: `User created successfully`,
+  });
+});
+
 export default apiRouter;
