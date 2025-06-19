@@ -1,7 +1,7 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   const registrationForm = document.getElementById("registration-form");
 
-  registrationForm.addEventListener("submit", async (event) => {
+  registrationForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const formData = new FormData(registrationForm);
@@ -15,18 +15,20 @@ document.addEventListener("DOMContentLoaded", function () {
     // execute the POST request to create a new user
     axios({
       method: "post",
-      url: "/api/user/create",
+      url: "/api/user",
       data: data,
     })
       .then((res) => {
         if (res.status === 201) {
           alert("You have registered successfully!");
+          registrationForm.reset();
+
           // redirect to the login page
           window.location.href = "/auth/login";
-          formData.clear();
         }
       })
       .catch((error) => {
+        console.log(error);
         alert(error.response.data.message);
       });
   });

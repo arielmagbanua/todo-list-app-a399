@@ -65,16 +65,20 @@ main {
   padding-top: var(--padding-medium);
 }
 
-main section.registration {
+main section.registration,
+main section.login {
   margin-top: var(--padding-very-large);
   margin-bottom: var(--padding-medium);
 }
-form#registration-form h2 {
+
+form#registration-form h2,
+form#login-form h2 {
   margin-top: var(--padding-medium);
   margin-bottom: var(--padding-medium);
 }
 
-form#registration-form {
+form#registration-form,
+form#login-form {
   display: flex;
   flex-direction: column;
   justify-content: center;

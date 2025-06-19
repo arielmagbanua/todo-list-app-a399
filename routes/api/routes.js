@@ -26,7 +26,7 @@ apiRouter.delete("/todo/:id", (req, res) => {
   res.json({ message: `Delete todo with id ${todoId} successful` });
 });
 
-apiRouter.post("/user/create", async (req, res) => {
+apiRouter.post("/user", async (req, res) => {
   const { firstname, lastname, email, password } = req.body;
 
   // capture duplicate email using try-catch
@@ -54,6 +54,39 @@ apiRouter.post("/user/create", async (req, res) => {
     res
       .status(500)
       .json({ message: "An error occurred while creating the user." });
+  }
+});
+
+apiRouter.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  const unauthorizedResponse = {
+    message: "Invalid email or password, please try again.",
+  };
+
+  try {
+    // find the user by email
+    const user = await User.where({ email }).findOne();
+
+    if (!user) {
+      return res.status(401).json(unauthorizedResponse);
+    }
+
+    // compare the password with the hashed password in the database
+    const result = bcrypt.compareSync(password, user.password);
+    if (!result) {
+      return res.status(401).json(unauthorizedResponse);
+    }
+
+    // store the user in the session and redirect to the home page
+    req.session.user = {
+      id: user._id,
+      name: user.firstname + " " + user.lastname,
+    };
+
+    res.json({ message: "Login successful" });
+  } catch (error) {
+    return res.status(401).json(unauthorizedResponse);
   }
 });
 
