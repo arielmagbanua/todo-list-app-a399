@@ -1,11 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("login-form");
+  const loginButton = document.getElementById("login");
 
   loginForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const formData = new FormData(loginForm);
     const data = Object.fromEntries(formData.entries());
+
+    // disable the login button
+    loginButton.setAttribute("disabled", true);
 
     // execute the POST request to login the user
     axios({
@@ -24,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
+        loginButton.setAttribute("disabled", false);
         console.log(error);
       });
   });

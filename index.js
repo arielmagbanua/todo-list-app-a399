@@ -31,10 +31,13 @@ app.use(
 app.set("trust proxy", 1); // trust first proxy
 app.use(
   session({
-    secret: "isjdf121391u239u1-192381723-aajcaslkd", // Change this to a strong secret
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }, // Set to true in production with HTTPS
+    secret: process.env.SESSION_SECRET, // Change this to a strong secret
+    resave: false, // prevents resaving session if it hasn't changed
+    saveUninitialized: false, // prevents storing empty sessions
+    cookie: {
+      secure: false, // set to true in production with HTTPS
+      maxAge: 1000 * 60 * 60, // 1 hour
+    },
   })
 );
 
