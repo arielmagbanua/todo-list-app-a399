@@ -58,6 +58,7 @@ apiRouter.post("/user", async (req, res) => {
 });
 
 apiRouter.post("/login", async (req, res) => {
+  // get the email and password from the request body
   const { email, password } = req.body;
 
   const unauthorizedResponse = {
@@ -69,12 +70,14 @@ apiRouter.post("/login", async (req, res) => {
     const user = await User.where({ email }).findOne();
 
     if (!user) {
+      // user not found
       return res.status(401).json(unauthorizedResponse);
     }
 
     // compare the password with the hashed password in the database
     const result = bcrypt.compareSync(password, user.password);
     if (!result) {
+      // password does not match
       return res.status(401).json(unauthorizedResponse);
     }
 

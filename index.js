@@ -46,6 +46,11 @@ app.use("/user", userRouter);
 app.use("/api", apiRouter);
 app.use("/todos", todosRouter);
 
+app.get("/", (req, res) => {
+  // redirect to the todos page
+  res.redirect("/todos");
+});
+
 // attempt connection to mongodb
 connect();
 
