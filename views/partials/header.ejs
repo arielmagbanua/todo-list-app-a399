@@ -3,9 +3,13 @@
     <h1>Todo List</h1>
     <ul>
       <li><a href="/">Home</a></li>
-      <li><a href="#logout">Logout</a></li>
+
+      <% if (authenticated) { %>
+      <li><a id="logout" href="#logout">Logout</a></li>
+      <% } else { %>
       <li><a href="/auth/registration">Registration</a></li>
       <li><a href="/auth/login">Login</a></li>
+      <% } %>
     </ul>
   </nav>
 </header>

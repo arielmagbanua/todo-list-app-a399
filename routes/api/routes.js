@@ -93,4 +93,13 @@ apiRouter.post("/login", async (req, res) => {
   }
 });
 
+apiRouter.post("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: "Logout failed" });
+    }
+    res.json({ message: "Logout successful" });
+  });
+});
+
 export default apiRouter;
