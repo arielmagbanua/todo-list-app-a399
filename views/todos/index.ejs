@@ -136,6 +136,14 @@
           // get the todo ID from the button's data-id attribute
           const todoId = this.getAttribute("data-id");
 
+          // confirm the deletion
+          const confirmDelete = confirm(
+            "Are you sure you want to delete this todo?"
+          );
+          if (!confirmDelete) {
+            return; // exit if the user cancels
+          }
+
           // execute the delete request
           axios({
             method: "delete",
