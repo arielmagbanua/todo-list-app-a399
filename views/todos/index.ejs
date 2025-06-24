@@ -12,16 +12,19 @@
     <main>
       <!-- todos controls -->
       <section>
-        <div class="controls">
+        <form id="search-form" action="" method="get">
           <input
             type="text"
             id="search"
             name="search"
-            placeholder="search"
+            placeholder="search todos"
             required
           />
+          <button type="submit" role="search" id="search-submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
           <button class="open-modal">+</button>
-        </div>
+        </form>
       </section>
       <section class="todos"></section>
     </main>
