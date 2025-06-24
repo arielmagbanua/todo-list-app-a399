@@ -1,4 +1,4 @@
-const failInUnauthorized = (req, res, next) => {
+const failIfUnauthorized = (req, res, next) => {
   if (!req.session.user) {
     // no authenticated user, fail with 401 Unauthorized
     return res.status(401).json({ error: "Unauthorized" });
@@ -7,4 +7,4 @@ const failInUnauthorized = (req, res, next) => {
   next();
 };
 
-export default failInUnauthorized;
+export default failIfUnauthorized;
