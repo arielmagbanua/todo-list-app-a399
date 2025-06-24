@@ -2,14 +2,6 @@ import express from "express";
 
 const userRouter = express.Router();
 
-const authMiddleware = (req, res, next) => {
-  console.log("Auth middleware executed");
-
-  next();
-};
-
-userRouter.use(authMiddleware);
-
 userRouter.get("/:id", (req, res) => {
   const userId = req.params.id;
 

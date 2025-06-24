@@ -1,13 +1,31 @@
 import express from "express";
 import bcrypt from "bcryptjs";
+import failInUnauthorized from "../../middlewares/failInUnauthorized.js";
 
 const apiRouter = express.Router();
 
 // models
 import User from "../../models/user.js";
 
-apiRouter.post("/todo", (req, res) => {
-  // TODO: create a new todo item
+apiRouter.post(failInUnauthorized, "/todo", async (req, res) => {
+  // get the user id from the session
+  const { id } = req.session.user;
+
+  // get todo data from the request body
+  const { title, description } = req.body;
+
+  try {
+    const newTodo = new Todo({
+      userId: id,
+      title,
+      description,
+    });
+
+    const savedTodo = await newTodo.save();
+    res.status(201).json(savedTodo);
+  } catch (error) {
+    res.status(500).json({ message: "Error creating todo.", error });
+  }
 
   res.json({ message: "Create todo successful" });
 });
