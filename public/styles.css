@@ -123,15 +123,25 @@ textarea {
   box-sizing: border-box;
 }
 
-.controls {
+form#search-form {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--padding-medium);
+  justify-content: start;
+  align-items: start;
+  flex-direction: row;
   margin-top: var(--padding-medium);
   margin-bottom: var(--padding-medium);
   padding-left: calc(var(--padding-very-large) * 4);
   padding-right: calc(var(--padding-very-large) * 4);
+  gap: var(--padding-medium);
+}
+
+#search,
+#search-submit {
+  width: initial;
+}
+
+#search {
+  flex: 1;
 }
 
 /* Modal background */
@@ -169,7 +179,8 @@ textarea {
   color: #333;
 }
 
-.open-modal {
+.open-modal,
+#search-submit {
   display: inline-flex;
   align-items: center;
   justify-content: center;
