@@ -7,13 +7,21 @@ const todosRouter = express.Router();
 
 todosRouter.use(redirectIfNotAuthenticated);
 
-todosRouter.get("/", (req, res) => {
+todosRouter.get("/", async (req, res) => {
   // get the user id from the session
   const { id, name } = req.session.user;
 
-  // TODO: get all todos that belongs to the user
+  let todos = [];
 
-  res.render("todos/index", { name, authenticated: true });
+  try {
+    // get all todos that belongs to the user
+    todos = await Todo.find({ userId: id });
+  } catch (error) {
+    // something went wrong, log the error
+    console.error(error);
+  }
+
+  res.render("todos/index", { name, authenticated: true, todos });
 });
 
 export default todosRouter;

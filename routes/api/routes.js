@@ -36,10 +36,20 @@ apiRouter.put("/todo/:id", (req, res) => {
   res.json({ message: `Update todo with id ${todoId} successful` });
 });
 
-apiRouter.delete("/todo/:id", (req, res) => {
+apiRouter.delete("/todo/:id", async (req, res) => {
   const todoId = req.params.id;
 
-  res.json({ message: `Delete todo with id ${todoId} successful` });
+  try {
+    // find the todo by id and delete it
+    const deletedTodo = await Todo.findByIdAndDelete(todoId);
+    if (!deletedTodo) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+
+    res.json({ message: "Todo deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting todo", error });
+  }
 });
 
 apiRouter.post("/user", async (req, res) => {

@@ -23,7 +23,23 @@
           <button class="open-modal">+</button>
         </div>
       </section>
-      <section class="todos"></section>
+      <section class="todos">
+        <% todos.forEach((todo) => { %>
+        <div class="todo-card">
+          <div class="todo-controls">
+            <h2 class="title"><%= todo.title %></h2>
+            <button class="edit-todo icon-button" data-id="<%= todo._id %>">
+              <i class="fa-solid fa-pencil"></i>
+            </button>
+            <button class="delete-todo icon-button" data-id="<%= todo._id %>">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+
+          <p><%= todo.description %></p>
+        </div>
+        <% }); %>
+      </section>
     </main>
 
     <!-- Modal -->
@@ -98,8 +114,7 @@
             }
           })
           .catch((error) => {
-            if (error.response && error.response.status === 401) {
-              // handle unauthorized error
+            if (error.response) {
               alert(error.response.data.message);
               return;
             }
@@ -109,6 +124,31 @@
             console.log(error);
           });
       };
+
+      // delete todo
+      const deleteButtons = document.querySelectorAll(".delete-todo");
+      deleteButtons.forEach((button) => {
+        // listen for click events on each delete button
+        button.onclick = function () {
+          // get the todo ID from the button's data-id attribute
+          const todoId = this.getAttribute("data-id");
+
+          // execute the delete request
+          axios({
+            method: "delete",
+            url: `/api/todo/${todoId}`,
+          })
+            .then((res) => {
+              if (res.status === 200) {
+                // refresh the page to show the updated todo list
+                window.location.reload();
+              }
+            })
+            .catch((error) => {
+              console.error(error.response.data);
+            });
+        };
+      });
     </script>
   </body>
 </html>
