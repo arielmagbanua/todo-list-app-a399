@@ -48,7 +48,7 @@ apiRouter.delete("/todo/:id", async (req, res) => {
 
     res.json({ message: "Todo deleted successfully." });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting todo", error });
+    res.status(500).json({ message: "Error deleting todo" });
   }
 });
 
