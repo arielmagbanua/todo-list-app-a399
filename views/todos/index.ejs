@@ -12,19 +12,19 @@
     <main>
       <!-- todos controls -->
       <section>
-        <form id="search-form" action="" method="get">
+        <form id="search-form" action="/todos" method="get">
           <input
             type="text"
             id="search"
             name="search"
+            value="<%= search %>"
             placeholder="search todos"
-            required
           />
           <button type="submit" role="search" id="search-submit">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
-          <button class="open-modal">+</button>
         </form>
+        <button class="open-modal">+</button>
       </section>
       <section class="todos">
         <% todos.forEach((todo) => { %>
