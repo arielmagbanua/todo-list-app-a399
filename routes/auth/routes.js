@@ -11,7 +11,7 @@ authRouter.get("/login", (req, res) => {
 });
 
 authRouter.get("/registration", (req, res) => {
-  res.render("auth/registration");
+  res.render("auth/registration", { authenticated: false });
 });
 
 export default authRouter;

@@ -1,29 +1,80 @@
 import express from "express";
 import bcrypt from "bcryptjs";
+import failIfUnauthorized from "../../middlewares/failIfUnauthorized.js";
+
+import User from "../../models/user.js";
+import Todo from "../../models/todo.js";
 
 const apiRouter = express.Router();
 
-// models
-import User from "../../models/user.js";
+apiRouter.post("/todo", failIfUnauthorized, async (req, res) => {
+  // get the user id from the session
+  const { id } = req.session.user;
 
-apiRouter.post("/todo", (req, res) => {
-  // TODO: create a new todo item
+  // get todo data from the request body
+  const { title, description } = req.body;
 
-  res.json({ message: "Create todo successful" });
+  try {
+    const newTodo = new Todo({
+      userId: id,
+      title,
+      description,
+    });
+
+    const savedTodo = await newTodo.save();
+    res.status(201).json(savedTodo);
+  } catch (error) {
+    res.status(500).json({ message: "Error creating todo." });
+  }
 });
 
-apiRouter.put("/todo/:id", (req, res) => {
-  const todoId = req.params.id;
+apiRouter.put("/todo", async (req, res) => {
+  const { todoId, title, description } = req.body;
 
-  // TODO: update the todo item with the given id
-
-  res.json({ message: `Update todo with id ${todoId} successful` });
+  try {
+    // update the todo with the given id
+    const result = await Todo.updateOne(
+      { _id: todoId },
+      { title, description }
+    );
+    if (result.acknowledged) {
+      return res.json({ message: "Todo updated successfully." });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: "Error updating todo." });
+  }
 });
 
-apiRouter.delete("/todo/:id", (req, res) => {
+apiRouter.get("/todo/:id", failIfUnauthorized, async (req, res) => {
+  const todoId = req.params.id;
+  const { id: userId } = req.session.user;
+
+  try {
+    const todo = await Todo.findOne({ _id: todoId, userId });
+    if (!todo) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+
+    res.json(todo);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching todo" });
+  }
+});
+
+apiRouter.delete("/todo/:id", failIfUnauthorized, async (req, res) => {
   const todoId = req.params.id;
 
-  res.json({ message: `Delete todo with id ${todoId} successful` });
+  try {
+    // find the todo by id and delete it
+    const deletedTodo = await Todo.findByIdAndDelete(todoId);
+    if (!deletedTodo) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+
+    res.json({ message: "Todo deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting todo" });
+  }
 });
 
 apiRouter.post("/user", async (req, res) => {
