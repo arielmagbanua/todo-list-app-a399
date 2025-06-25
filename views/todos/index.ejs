@@ -53,6 +53,7 @@
         <h2>Add Todo</h2>
 
         <form id="todo-form">
+          <input type="text" id="todo-id" name="todoId" hidden />
           <div class="form-group">
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" required />
@@ -76,7 +77,7 @@
       const modal = document.getElementById("todo");
       const openBtn = document.querySelector(".open-modal");
       const closeBtn = document.querySelector(".modal-close");
-      const form = document.getElementById("todo-form");
+      const todoForm = document.getElementById("todo-form");
 
       // open modal
       openBtn.onclick = function () {
@@ -96,19 +97,19 @@
       };
 
       // form submission
-      form.onsubmit = function (event) {
+      todoForm.onsubmit = function (event) {
         event.preventDefault();
 
-        const formData = new FormData(form);
+        const formData = new FormData(todoForm);
         const data = Object.fromEntries(formData.entries());
 
         axios({
-          method: "post",
+          method: data?.todoId ? "put" : "post",
           url: "/api/todo",
           data: data,
         })
           .then((res) => {
-            if (res.status === 201) {
+            if (res.status === 201 || res.status === 200) {
               // hide the modal
               modal.style.display = "none";
 
@@ -158,6 +159,46 @@
             })
             .catch((error) => {
               console.error(error.response.data);
+            });
+        };
+      });
+
+      // edit todo
+      const editButtons = document.querySelectorAll(".edit-todo");
+      editButtons.forEach((button) => {
+        button.onclick = function () {
+          // get the todo ID from the button's data-id attribute
+          const todoId = this.getAttribute("data-id");
+
+          // fetch the todo data
+          axios({
+            method: "get",
+            url: `/api/todo/${todoId}`,
+          })
+            .then((res) => {
+              if (res.status === 200) {
+                // show the modal
+                modal.style.display = "flex";
+
+                // populate the form with the todo data
+                const { title, description } = res.data;
+                const todoIdInput = document.getElementById("todo-id");
+                const todoTitle = document.getElementById("title");
+                const todoDescription = document.getElementById("description");
+
+                todoIdInput.value = todoId;
+                todoTitle.value = title;
+                todoDescription.value = description;
+              }
+            })
+            .catch((error) => {
+              if (error.response) {
+                // handle unauthorized error
+                alert(error.response.data.message);
+                return;
+              }
+
+              console.error(error.response);
             });
         };
       });

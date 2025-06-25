@@ -28,15 +28,40 @@ apiRouter.post("/todo", failIfUnauthorized, async (req, res) => {
   }
 });
 
-apiRouter.put("/todo/:id", (req, res) => {
-  const todoId = req.params.id;
+apiRouter.put("/todo", async (req, res) => {
+  const { todoId, title, description } = req.body;
 
-  // TODO: update the todo item with the given id
-
-  res.json({ message: `Update todo with id ${todoId} successful` });
+  try {
+    // update the todo with the given id
+    const result = await Todo.updateOne(
+      { _id: todoId },
+      { title, description }
+    );
+    if (result.acknowledged) {
+      return res.json({ message: "Todo updated successfully." });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: "Error updating todo." });
+  }
 });
 
-apiRouter.delete("/todo/:id", async (req, res) => {
+apiRouter.get("/todo/:id", failIfUnauthorized, async (req, res) => {
+  const todoId = req.params.id;
+  const { id: userId } = req.session.user;
+
+  try {
+    const todo = await Todo.findOne({ _id: todoId, userId });
+    if (!todo) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+
+    res.json(todo);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching todo" });
+  }
+});
+
+apiRouter.delete("/todo/:id", failIfUnauthorized, async (req, res) => {
   const todoId = req.params.id;
 
   try {
