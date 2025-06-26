@@ -13,9 +13,9 @@ env:
 
   - variable: SESSION_SECRET
     value: "isjdf121391u239u1-192381723-aajcaslkd"
-
   - variable: DB_CONNECTION
-    value: mongodb
+    secret: db_connection
+
 # Configure environment variables.
 # See https://firebase.google.com/docs/app-hosting/configure#user-defined-environment
 # - variable: MESSAGE
