@@ -1,42 +1,58 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import failIfUnauthorized from "../../middlewares/failIfUnauthorized.js";
+import upload from "../../middlewares/multerStorage.js";
 
 import User from "../../models/user.js";
 import Todo from "../../models/todo.js";
 
 const apiRouter = express.Router();
 
-apiRouter.post("/todo", failIfUnauthorized, async (req, res) => {
-  // get the user id from the session
-  const { id } = req.session.user;
+apiRouter.post(
+  "/todo",
+  failIfUnauthorized,
+  upload.single("image"),
+  async (req, res) => {
+    // get the user id from the session
+    const { id } = req.session.user;
 
-  // get todo data from the request body
-  const { title, description } = req.body;
+    // get the image filename from the uploaded file
+    const imageFilename = req.file.filename;
 
-  try {
-    const newTodo = new Todo({
-      userId: id,
-      title,
-      description,
-    });
+    // get todo data from the request body
+    const { title, description } = req.body;
 
-    const savedTodo = await newTodo.save();
-    res.status(201).json(savedTodo);
-  } catch (error) {
-    res.status(500).json({ message: "Error creating todo." });
+    try {
+      const newTodo = new Todo({
+        userId: id,
+        title,
+        description,
+        image: imageFilename, // store the filename of the uploaded image
+      });
+
+      const savedTodo = await newTodo.save();
+      res.status(201).json(savedTodo);
+    } catch (error) {
+      res.status(500).json({ message: "Error creating todo." });
+    }
   }
-});
+);
 
-apiRouter.put("/todo", async (req, res) => {
+apiRouter.put("/todo", upload.single("image"), async (req, res) => {
+  // get the image filename from the uploaded file
+  const imageFilename = req.file?.filename;
+
   const { todoId, title, description } = req.body;
+  const updatedTodo = { title, description };
+
+  if (imageFilename) {
+    // if an image is uploaded, add the image filename to the updatedTodo object
+    updatedTodo.image = imageFilename;
+  }
 
   try {
     // update the todo with the given id
-    const result = await Todo.updateOne(
-      { _id: todoId },
-      { title, description }
-    );
+    const result = await Todo.updateOne({ _id: todoId }, updatedTodo);
     if (result.acknowledged) {
       return res.json({ message: "Todo updated successfully." });
     }
