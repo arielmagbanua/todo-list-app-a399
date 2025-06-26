@@ -1,0 +1,13 @@
+{
+  "apphosting": {
+    "backendId": "todo-list-app-a399",
+    "rootDir": "/",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log",
+      "functions"
+    ]
+  }
+}

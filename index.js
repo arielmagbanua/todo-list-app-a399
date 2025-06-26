@@ -12,7 +12,7 @@ import userRouter from "./routes/user/routes.js";
 import apiRouter from "./routes/api/routes.js";
 import todosRouter from "./routes/todos/routes.js";
 
-const port = process.env.PORT || 8500;
+const port = process.env.PORT || 8080;
 const app = express();
 
 // Middleware to serve static files from the "public" directory
