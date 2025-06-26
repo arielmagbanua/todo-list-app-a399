@@ -14,6 +14,7 @@ export default function connect() {
       console.log("Connected to database");
     })
     .catch((error) => {
-      console.log(error);
+      console.log("Failed to connect to database");
+      console.error(error);
     });
 }
