@@ -17,7 +17,7 @@ apiRouter.post(
     const { id } = req.session.user;
 
     // get the image filename from the uploaded file
-    const imageFilename = req.file.filename;
+    const imageFilename = req?.file?.filename;
 
     // get todo data from the request body
     const { title, description } = req.body;
@@ -27,7 +27,7 @@ apiRouter.post(
         userId: id,
         title,
         description,
-        image: imageFilename, // store the filename of the uploaded image
+        image: imageFilename ?? "", // store the filename of the uploaded image
       });
 
       const savedTodo = await newTodo.save();
@@ -40,7 +40,7 @@ apiRouter.post(
 
 apiRouter.put("/todo", upload.single("image"), async (req, res) => {
   // get the image filename from the uploaded file
-  const imageFilename = req.file?.filename;
+  const imageFilename = req?.file?.filename;
 
   const { todoId, title, description } = req.body;
   const updatedTodo = { title, description };

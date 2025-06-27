@@ -11,7 +11,7 @@
     <%- include('../partials/header') %>
     <main>
       <!-- todos controls -->
-      <section>
+      <section class="todos-controls">
         <form id="search-form" action="/todos" method="get">
           <input
             type="text"
@@ -40,6 +40,11 @@
           </div>
 
           <p><%= todo.description %></p>
+          <% if (todo.image) { %>
+          <figure class="image-container">
+            <img src="<%= todo.image %>" />
+          </figure>
+          <% } %>
         </div>
         <% }); %>
       </section>

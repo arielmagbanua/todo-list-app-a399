@@ -1,5 +1,6 @@
 import express from "express";
 import redirectIfNotAuthenticated from "../../middlewares/redirectIfNotAuthenticated.js";
+import readFile from "../../modules/readFile.js";
 
 import Todo from "../../models/todo.js";
 
@@ -33,6 +34,23 @@ todosRouter.get("/", async (req, res) => {
     // something went wrong, log the error
     console.error(error);
   }
+
+  // get image from storage
+  todos = todos.map((todo) => {
+    let base64Image = null;
+
+    if (todo.image) {
+      const imgBuffer = readFile(todo.image);
+      const imageStr = imgBuffer.toString("base64");
+
+      base64Image = `data:image/jpeg;base64,${imageStr}`;
+    }
+
+    return {
+      ...todo.toObject(),
+      image: base64Image, // prepend the uploads path to the image filename
+    };
+  });
 
   res.render("todos/index", { name, authenticated: true, todos, search });
 });
